@@ -45,6 +45,9 @@ htmlcov/
 
 # Superpowers / brainstorming
 .superpowers/
+.claude/
 
-# Documentación generada
+# Documentación generada / artefactos de desarrollo
 docs/superpowers/
+*.html
+.git-rewrite/

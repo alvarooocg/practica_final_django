@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Actividades{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Actividades</h1>
+    {% if user.rol == 'admin' %}
+    <a href="{% url 'actividad_crear' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">+ Nueva</a>
+    {% endif %}
+</div>
+<form method="get" class="bg-white p-4 rounded-xl shadow mb-6 flex gap-4 flex-wrap">
+    <div>
+        <label class="text-sm text-gray-600">Tipo</label>
+        <input type="text" name="tipo" value="{{ tipo_filtro }}" placeholder="ej. danza" class="ml-2 border rounded px-2 py-1 text-sm">
+    </div>
+    <div>
+        <label class="text-sm text-gray-600">Monitor</label>
+        <select name="monitor" class="ml-2 border rounded px-2 py-1 text-sm">
+            <option value="">Todos</option>
+            {% for m in monitores %}
+            <option value="{{ m.pk }}" {% if monitor_filtro == m.pk|stringformat:"s" %}selected{% endif %}>{{ m.get_full_name|default:m.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="bg-gray-200 px-3 py-1 rounded text-sm hover:bg-gray-300">Filtrar</button>
+    <a href="{% url 'actividades_lista' %}" class="text-sm text-gray-500 self-center hover:underline">Limpiar</a>
+</form>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for act in actividades %}
+    <div class="bg-white rounded-xl shadow p-5 hover:shadow-md transition">
+        <div class="flex justify-between items-start">
+            <h2 class="font-semibold text-lg text-gray-800">{{ act.nombre }}</h2>
+            <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">{{ act.tipo }}</span>
+        </div>
+        <p class="text-sm text-gray-500 mt-1">{{ act.horario|date:"d/m/Y H:i" }} · {{ act.duracion }} min</p>
+        <p class="text-sm text-gray-600 mt-1">Monitor: {{ act.monitor.get_full_name|default:act.monitor.username|default:"—" }}</p>
+        <p class="text-sm mt-1 {% if act.plazas_disponibles == 0 %}text-red-600 font-medium{% else %}text-green-600{% endif %}">
+            {{ act.plazas_disponibles }} plaza{{ act.plazas_disponibles|pluralize:"s" }} disponible{{ act.plazas_disponibles|pluralize:"s" }}
+        </p>
+        <div class="mt-3 flex gap-2">
+            <a href="{% url 'actividad_detalle' act.pk %}" class="text-indigo-600 text-sm hover:underline">Ver detalle</a>
+            {% if user.rol == 'admin' %}
+            <a href="{% url 'actividad_editar' act.pk %}" class="text-yellow-600 text-sm hover:underline">Editar</a>
+            <a href="{% url 'actividad_eliminar' act.pk %}" class="text-red-600 text-sm hover:underline">Eliminar</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-500 col-span-3">No hay actividades.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ actividad.nombre }}{% endblock %}
+{% block content %}
+<div class="max-w-2xl">
+    <a href="{% url 'actividades_lista' %}" class="text-indigo-600 text-sm hover:underline">← Volver</a>
+    <div class="bg-white rounded-2xl shadow p-8 mt-4">
+        <div class="flex justify-between items-start">
+            <h1 class="text-2xl font-bold text-gray-800">{{ actividad.nombre }}</h1>
+            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm">{{ actividad.tipo }}</span>
+        </div>
+        <dl class="mt-4 space-y-2 text-sm text-gray-700">
+            <div class="flex gap-2"><dt class="font-medium w-32">Horario:</dt><dd>{{ actividad.horario|date:"d/m/Y H:i" }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Duración:</dt><dd>{{ actividad.duracion }} minutos</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Plazas:</dt><dd class="{% if actividad.plazas_disponibles == 0 %}text-red-600 font-medium{% else %}text-green-600{% endif %}">{{ actividad.plazas_disponibles }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Monitor:</dt><dd>{{ actividad.monitor.get_full_name|default:actividad.monitor.username|default:"—" }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Sala:</dt><dd>{{ actividad.sala_principal.nombre|default:"—" }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Descripción:</dt><dd>{{ actividad.descripcion }}</dd></div>
+        </dl>
+        <div class="mt-6 flex gap-3 flex-wrap">
+            {% if user.rol == 'usuario' %}
+                {% if ya_inscrito %}
+                <a href="{% url 'cancelar_inscripcion' actividad.pk user.pk %}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm hover:bg-red-200 transition">Cancelar inscripción</a>
+                {% elif actividad.plazas_disponibles > 0 %}
+                <a href="{% url 'inscribir_usuario' actividad.pk %}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 transition">Inscribirme</a>
+                {% else %}
+                <span class="text-red-600 text-sm font-medium">Sin plazas disponibles</span>
+                {% endif %}
+            {% endif %}
+            {% if user.rol == 'admin' or user.rol == 'monitor' %}
+            <a href="{% url 'inscripciones_lista' actividad.pk %}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition">Ver inscritos</a>
+            {% endif %}
+            {% if user.rol == 'admin' %}
+            <a href="{% url 'actividad_editar' actividad.pk %}" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-sm hover:bg-yellow-200 transition">Editar</a>
+            <a href="{% url 'actividad_eliminar' actividad.pk %}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm hover:bg-red-200 transition">Eliminar</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

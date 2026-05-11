@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{{ usuario.username }}{% endblock %}
+{% block content %}
+<div class="max-w-lg">
+    <a href="{% url 'usuarios_lista' %}" class="text-indigo-600 text-sm hover:underline">← Volver</a>
+    <div class="bg-white rounded-2xl shadow p-8 mt-4">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ usuario.get_full_name|default:usuario.username }}</h1>
+        <dl class="space-y-2 text-sm text-gray-700">
+            <div class="flex gap-2"><dt class="font-medium w-32">Usuario:</dt><dd>{{ usuario.username }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Email:</dt><dd>{{ usuario.email|default:"—" }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Rol:</dt><dd>{{ usuario.get_rol_display }}</dd></div>
+            {% if usuario.edad %}<div class="flex gap-2"><dt class="font-medium w-32">Edad:</dt><dd>{{ usuario.edad }}</dd></div>{% endif %}
+            {% if usuario.telefono %}<div class="flex gap-2"><dt class="font-medium w-32">Teléfono:</dt><dd>{{ usuario.telefono }}</dd></div>{% endif %}
+        </dl>
+        <div class="mt-6 flex gap-3">
+            <a href="{% url 'usuario_editar' usuario.pk %}" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-sm hover:bg-yellow-200 transition">Editar</a>
+            {% if user.rol == 'admin' %}
+            <a href="{% url 'usuario_eliminar' usuario.pk %}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm hover:bg-red-200 transition">Eliminar</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

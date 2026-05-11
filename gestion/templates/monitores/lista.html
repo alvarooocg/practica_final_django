@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Monitores{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Monitores</h1>
+    {% if user.rol == 'admin' %}
+    <a href="{% url 'monitor_crear' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">+ Nuevo</a>
+    {% endif %}
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {% for m in monitores %}
+    <div class="bg-white rounded-xl shadow p-5">
+        <h2 class="font-semibold text-lg text-gray-800">{{ m.get_full_name|default:m.username }}</h2>
+        <p class="text-sm text-gray-500">{{ m.especializacion|default:"Sin especialización" }}</p>
+        <p class="text-sm text-gray-500">{{ m.num_actividades }} actividad{{ m.num_actividades|pluralize:"es" }}</p>
+        <div class="mt-3 flex gap-2">
+            <a href="{% url 'monitor_detalle' m.pk %}" class="text-indigo-600 text-sm hover:underline">Ver</a>
+            {% if user.rol == 'admin' or user.pk == m.pk %}
+            <a href="{% url 'monitor_editar' m.pk %}" class="text-yellow-600 text-sm hover:underline">Editar</a>
+            {% endif %}
+            {% if user.rol == 'admin' %}
+            <a href="{% url 'monitor_eliminar' m.pk %}" class="text-red-600 text-sm hover:underline">Eliminar</a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-500 col-span-3">Sin monitores registrados.</p>
+    {% endfor %}
+</div>
+{% endblock %}

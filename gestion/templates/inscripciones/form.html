@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Inscribirse — {{ actividad.nombre }}{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto mt-12">
+    <div class="bg-white rounded-2xl shadow p-8 text-center">
+        <h1 class="text-xl font-bold text-gray-800 mb-2">Confirmar inscripción</h1>
+        <p class="text-gray-600 mb-2">Actividad: <strong>{{ actividad.nombre }}</strong></p>
+        <p class="text-gray-600 mb-6">Plazas disponibles: <strong class="text-green-600">{{ actividad.plazas_disponibles }}</strong></p>
+        <form method="post" class="flex justify-center gap-4">
+            {% csrf_token %}
+            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">Confirmar</button>
+            <a href="{% url 'actividad_detalle' actividad.pk %}" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ sala.nombre }}{% endblock %}
+{% block content %}
+<div class="max-w-lg">
+    <a href="{% url 'salas_lista' %}" class="text-indigo-600 text-sm hover:underline">← Volver</a>
+    <div class="bg-white rounded-2xl shadow p-8 mt-4">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ sala.nombre }}</h1>
+        <dl class="space-y-2 text-sm text-gray-700">
+            <div class="flex gap-2"><dt class="font-medium w-32">Ubicación:</dt><dd>{{ sala.ubicacion }}</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Capacidad:</dt><dd>{{ sala.capacidad }} personas</dd></div>
+            <div class="flex gap-2"><dt class="font-medium w-32">Responsable:</dt><dd>{{ sala.responsable.username|default:"Sin asignar" }}</dd></div>
+        </dl>
+        {% if user.rol == 'admin' %}
+        <div class="mt-6 flex gap-3">
+            <a href="{% url 'sala_editar' sala.pk %}" class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg text-sm hover:bg-yellow-200 transition">Editar</a>
+            <a href="{% url 'sala_eliminar' sala.pk %}" class="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm hover:bg-red-200 transition">Eliminar</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

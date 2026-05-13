@@ -26,7 +26,7 @@ Autores: Gonzalo Gardón Martín · Álvaro Criado García
 Aplicación web Django para digitalizar la gestión de actividades culturales de un centro municipal. Permite administrar actividades, monitores, salas e inscripciones a través de cuatro roles de usuario diferenciados.
 
 **Tecnologías utilizadas:**
-- Python 3.x + Django 6.x
+- Python 3.x + Django 5.x
 - SQLite (base de datos de desarrollo)
 - Tailwind CSS (via CDN, sin paso de build)
 

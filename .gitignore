@@ -31,6 +31,7 @@ static_root/
 # IDE y editores
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
@@ -43,14 +44,10 @@ htmlcov/
 .pytest_cache/
 .tox/
 
-# Superpowers / brainstorming
-.superpowers/
-.claude/
-
-# Documentación generada / artefactos de desarrollo
-docs/superpowers/
+# Archivos locales y artefactos
 *.html
+docs/
+.superpowers/
 .git-rewrite/
 generate_presentation.py
 Presentacion_CentroCultural_Django.pptx
-README.md
